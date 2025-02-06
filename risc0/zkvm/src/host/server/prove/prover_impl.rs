@@ -73,7 +73,7 @@ impl ProverServer for ProverImpl {
             }
         }
 
-        println!("Number of segments: {}", segments.len());
+        tracing::info!("Number of segments: {}", segments.len());
 
         let (assumptions, session_assumption_receipts): (Vec<_>, Vec<_>) =
             session.assumptions.iter().cloned().unzip();
@@ -129,8 +129,8 @@ impl ProverServer for ProverImpl {
         }
 
         // Print length of zkr_receipts and its total memory consumption
-        println!("Number of zkr_receipts: {}", zkr_receipts.len());
-        println!(
+        tracing::info!("Number of zkr_receipts: {}", zkr_receipts.len());
+        tracing::info!(
             "Total memory consumption of zkr_receipts: {}",
             bincode::serialize(&zkr_receipts).unwrap().len()
         );
@@ -161,7 +161,7 @@ impl ProverServer for ProverImpl {
         };
 
         // Print memory size of composite receipt
-        println!(
+        tracing::info!(
             "Composite Receipt size in bytes: {}",
             bincode::serialize(&composite_receipt).unwrap().len()
         );
@@ -185,7 +185,7 @@ impl ProverServer for ProverImpl {
             ReceiptKind::Succinct => {
                 let succinct_receipt = self.composite_to_succinct(&composite_receipt)?;
                 // Print memory size of succinct receipt
-                println!(
+                tracing::info!(
                     "Succinct Receipt size in bytes: {}",
                     bincode::serialize(&succinct_receipt).unwrap().len()
                 );
@@ -196,7 +196,7 @@ impl ProverServer for ProverImpl {
                 );
 
                 // Print receipt memory size
-                println!(
+                tracing::info!(
                     "Receipt size in bytes: {}",
                     bincode::serialize(&receipt).unwrap().len()
                 );
