@@ -63,8 +63,8 @@ impl ProverServer for ProverImpl {
             let receipt = self.prove_segment(ctx, &segment)?;
             // Print raw byte size of segmentreceipt
             println!(
-                "eval Receipt size in bytes: {}",
-                std::mem::size_of_val(&receipt)
+                "eval Receipt size in bytes: {:?}",
+                &bincode::serialize(&receipt).unwrap().len()
             );
 
             segments.push(receipt);
@@ -132,7 +132,7 @@ impl ProverServer for ProverImpl {
         println!("Number of zkr_receipts: {}", zkr_receipts.len());
         println!(
             "Total memory consumption of zkr_receipts: {}",
-            std::mem::size_of_val(&zkr_receipts)
+            bincode::serialize(&zkr_receipts).unwrap().len()
         );
 
         // TODO: add test case for when a single session refers to the same assumption multiple times
@@ -163,7 +163,7 @@ impl ProverServer for ProverImpl {
         // Print memory size of composite receipt
         println!(
             "Composite Receipt size in bytes: {}",
-            std::mem::size_of_val(&composite_receipt)
+            bincode::serialize(&composite_receipt).unwrap().len()
         );
 
         let session_claim = session.claim_with_assumptions(assumption_receipts.iter())?;
@@ -187,7 +187,7 @@ impl ProverServer for ProverImpl {
                 // Print memory size of succinct receipt
                 println!(
                     "Succinct Receipt size in bytes: {}",
-                    std::mem::size_of_val(&succinct_receipt)
+                    bincode::serialize(&succinct_receipt).unwrap().len()
                 );
 
                 let receipt = Receipt::new(
@@ -196,7 +196,10 @@ impl ProverServer for ProverImpl {
                 );
 
                 // Print receipt memory size
-                println!("Receipt size in bytes: {}", std::mem::size_of_val(&receipt));
+                println!(
+                    "Receipt size in bytes: {}",
+                    bincode::serialize(&receipt).unwrap().len()
+                );
                 receipt
             }
             ReceiptKind::Groth16 => {
