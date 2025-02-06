@@ -67,16 +67,13 @@ impl ProverServer for ProverImpl {
                 std::mem::size_of_val(&receipt)
             );
 
-            tracing::info!(
-                "eval Receipt size in bytes: {}",
-                std::mem::size_of_val(&receipt)
-            );
-
             segments.push(receipt);
             for hook in &session.hooks {
                 hook.on_post_prove_segment(&segment);
             }
         }
+
+        println!("Number of segments: {}", segments.len());
 
         let (assumptions, session_assumption_receipts): (Vec<_>, Vec<_>) =
             session.assumptions.iter().cloned().unzip();
@@ -130,6 +127,13 @@ impl ProverServer for ProverImpl {
             tracing::debug!("adding keccak assumption: {assumption:#?}");
             zkr_receipts.insert(assumption, receipt);
         }
+
+        // Print length of zkr_receipts and its total memory consumption
+        println!("Number of zkr_receipts: {}", zkr_receipts.len());
+        println!(
+            "Total memory consumption of zkr_receipts: {}",
+            std::mem::size_of_val(&zkr_receipts)
+        );
 
         // TODO: add test case for when a single session refers to the same assumption multiple times
         let inner_assumption_receipts: Vec<_> = session_assumption_receipts
