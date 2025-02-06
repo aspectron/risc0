@@ -60,7 +60,14 @@ impl ProverServer for ProverImpl {
             for hook in &session.hooks {
                 hook.on_pre_prove_segment(&segment);
             }
-            segments.push(self.prove_segment(ctx, &segment)?);
+            let receipt = self.prove_segment(ctx, &segment)?;
+            // Print raw byte size of segmentreceipt
+            println!(
+                "eval Receipt size in bytes: {}",
+                std::mem::size_of_val(&receipt)
+            );
+
+            segments.push(receipt);
             for hook in &session.hooks {
                 hook.on_post_prove_segment(&segment);
             }
