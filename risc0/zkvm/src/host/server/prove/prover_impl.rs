@@ -197,6 +197,7 @@ impl ProverServer for ProverImpl {
 
                 // Print receipt memory size
                 println!("Receipt size in bytes: {}", std::mem::size_of_val(&receipt));
+                receipt
             }
             ReceiptKind::Groth16 => {
                 let succinct_receipt = self.composite_to_succinct(&composite_receipt)?;
