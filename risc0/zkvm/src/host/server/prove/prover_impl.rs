@@ -190,10 +190,13 @@ impl ProverServer for ProverImpl {
                     std::mem::size_of_val(&succinct_receipt)
                 );
 
-                Receipt::new(
+                let receipt = Receipt::new(
                     InnerReceipt::Succinct(succinct_receipt),
                     session.journal.clone().unwrap_or_default().bytes,
-                )
+                );
+
+                // Print receipt memory size
+                println!("Receipt size in bytes: {}", std::mem::size_of_val(&receipt));
             }
             ReceiptKind::Groth16 => {
                 let succinct_receipt = self.composite_to_succinct(&composite_receipt)?;
