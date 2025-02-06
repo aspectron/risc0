@@ -67,6 +67,11 @@ impl ProverServer for ProverImpl {
                 std::mem::size_of_val(&receipt)
             );
 
+            tracing::info!(
+                "eval Receipt size in bytes: {}",
+                std::mem::size_of_val(&receipt)
+            );
+
             segments.push(receipt);
             for hook in &session.hooks {
                 hook.on_post_prove_segment(&segment);
