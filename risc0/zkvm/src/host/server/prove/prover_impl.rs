@@ -62,7 +62,7 @@ impl ProverServer for ProverImpl {
             }
             let receipt = self.prove_segment(ctx, &segment)?;
             // Print raw byte size of segmentreceipt
-            println!(
+            tracing::info!(
                 "eval Receipt size in bytes: {:?}",
                 &bincode::serialize(&receipt).unwrap().len()
             );
