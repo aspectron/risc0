@@ -160,6 +160,12 @@ impl ProverServer for ProverImpl {
             verifier_parameters,
         };
 
+        // Print memory size of composite receipt
+        println!(
+            "Composite Receipt size in bytes: {}",
+            std::mem::size_of_val(&composite_receipt)
+        );
+
         let session_claim = session.claim_with_assumptions(assumption_receipts.iter())?;
 
         // Verify the receipt to catch if something is broken in the proving process.
@@ -178,6 +184,12 @@ impl ProverServer for ProverImpl {
             ),
             ReceiptKind::Succinct => {
                 let succinct_receipt = self.composite_to_succinct(&composite_receipt)?;
+                // Print memory size of succinct receipt
+                println!(
+                    "Succinct Receipt size in bytes: {}",
+                    std::mem::size_of_val(&succinct_receipt)
+                );
+
                 Receipt::new(
                     InnerReceipt::Succinct(succinct_receipt),
                     session.journal.clone().unwrap_or_default().bytes,
